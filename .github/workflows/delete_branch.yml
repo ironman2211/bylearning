@@ -20,12 +20,12 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-      - name: Delete the branch
+      - name: Delete the Branch
         env:
-          PAT_TOKEN: ${{ secrets.PAT_TOKEN }} # Reference your PAT secret
+          PAT_TOKEN: ${{ secrets.PAT_TOKEN }}  # Reference your PAT secret
         run: |
-          git branch -D   origin/${{ github.event.inputs.branch_name }} # Deletes local branch
-          git push origin --delete   origin/${{ github.event.inputs.branch_name }} # Deletes remote branch
+          git push origin --delete ${{ github.event.inputs.branch_name }}  # Deletes remote branch
+          git branch -D ${{ github.event.inputs.branch_name }} # Deletes local branch (optional)
 
       - name: Confirm branch deletion
         run: echo "Branch ${{ github.event.inputs.branch_name }} deleted successfully!"
