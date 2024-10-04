@@ -1,33 +1,29 @@
-name: Create Branch
+name: Create branch
 
 on:
-  workflow_dispatch:
-    inputs:
-      branch_name:
-        description: "Enter branch name"
-        required: true
-        default: "new-branch"
+    workflow_dispatch:
+        inputs:
+            branch_name:
+                description: "Enter branch name"
+                required: true
+                default: new-branch
 
+            
 jobs:
-  create_branch:
-    runs-on: ubuntu-latest
+    create_branch:
+        runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
+        steps:      
+        - name: Checkout repository
+          uses: actions/checkout@v3
 
-      - name: Configure Git
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
+        - name: Create a new branch
+          run: |
+            git config user.name "github-actions[bot]"
+            git config user.email "github-actions[bot]@users.noreply.github.com"
+            git checkout -b ${{github.action.inputs.branch_name}}
+            git push origin ${{github.action.inputs.branch_name}}
 
-      - name: Create and Push New Branch
-        env:
-          PAT_TOKEN: ${{ secrets.PAT_TOKEN }}  # Reference the PAT secret
-        run: |
-          git checkout -b ${{ github.event.inputs.branch_name }}
-          git remote set-url origin https://x-access-token:${{ secrets.PAT_TOKEN }}@github.com/${{ github.repository }}.git
-          git push origin ${{ github.event.inputs.branch_name }}
-
-      - name: Confirm branch creation
-        run: echo "Branch ${{ github.event.inputs.branch_name }} created successfully!"
+        - name: Confirm branch creation
+          run: echo "Branch ${{github.action.inputs.branch_name}} created sussussfully"
+         
