@@ -1,0 +1,29 @@
+name: Create branch
+
+on:
+    workflow_dispatch:
+        inputs:
+            branch_name:
+                description: "Enter branch name"
+                required: true
+                default: new-branch
+
+            
+jobs:
+    create_branch:
+        runs-on: ubuntu-latest
+
+        steps:      
+        - name: Checkout repository
+          uses: action/checkout@v3
+
+        - name: Create a new branch
+          run: |
+            git config user.name "github-action[bot]"
+            git config user.email "github-actions[bot]@users.github.com"
+            git checkout -b ${{github.action.inputs.branch_name}}
+            git push origin ${{github.action.inputs.branch_name}}
+
+        - name: Confirm branch creation
+          run: echo "Branch ${{github.action.inputs.branch_name}} created sussussfully"
+         
