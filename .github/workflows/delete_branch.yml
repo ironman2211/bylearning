@@ -4,11 +4,12 @@ on:
   workflow_dispatch:
     inputs:
       branch_name:
-        description: "Enter Your Branch Name"
+        description: "Enter the branch name to delete"
         required: true
+
 jobs:
   delete_branch:
-    runs-on: ubnutu-latest
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
@@ -19,12 +20,12 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-      - name: Delete Branch
+      - name: Delete the branch
         env:
-          PAT_TOKEN: ${{ secrets.PAT_TOKEN }}
+          PAT_TOKEN: ${{ secrets.PAT_TOKEN }}  # Reference your PAT secret
         run: |
-          git branch -D ${{ github.event.inputs.branch_name }}
-          git push origin --delete ${{ github.event.inputs.branch_name }}
+          git branch -D ${{ github.event.inputs.branch_name }} # Deletes local branch
+          git push origin --delete ${{ github.event.inputs.branch_name }} # Deletes remote branch
 
       - name: Confirm branch deletion
         run: echo "Branch ${{ github.event.inputs.branch_name }} deleted successfully!"
