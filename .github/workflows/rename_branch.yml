@@ -25,12 +25,12 @@ jobs:
 
       - name: Rename the Branch
         env:
-          PAT_TOKEN: ${{ secrets.PAT_TOKEN }}
-        run: 
-          git checkout ${{github.event.inputs.old_branch_name}}
-          git branch -m ${{github.event.inputs.new_branch_name}}
-          git push origin :${{github.event.inputs.old_branch_name}}
-          git push origin ${{github.event.inputs.new_branch_name}}
-
-      - name: Rename Branch name
-        run: echo "Branch ${{ github.event.inputs.branch_name }} rename successfully!"
+         PAT_TOKEN: ${{ secrets.PAT_TOKEN }}
+        run: |
+            git checkout ${{ github.event.inputs.old_branch_name }}
+            git branch -m ${{ github.event.inputs.new_branch_name }}
+            git push origin :${{ github.event.inputs.old_branch_name }}
+            git push origin ${{ github.event.inputs.new_branch_name }} 
+  
+      - name: Confirm branch renaming
+        run: echo "Branch renamed from ${{ github.event.inputs.old_branch_name }} to ${{ github.event.inputs.new_branch_name }} successfully!"
