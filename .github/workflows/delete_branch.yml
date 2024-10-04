@@ -1,0 +1,30 @@
+name: Delete Branch
+
+on:
+  workflow_dispatch:
+    inputs:
+      branch_name:
+        description: "Enter Your Branch Name"
+        required: true
+jobs:
+  delete_branch:
+    runs-on: ubnutu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Configure Git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Delete Branch
+        env:
+          PAT_TOKEN: ${{ secrets.PAT_TOKEN }}
+        run: |
+          git branch -D ${{ github.event.inputs.branch_name }}
+          git push origin --delete ${{ github.event.inputs.branch_name }}
+
+      - name: Confirm branch deletion
+        run: echo "Branch ${{ github.event.inputs.branch_name }} deleted successfully!"
