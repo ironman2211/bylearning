@@ -25,7 +25,6 @@ jobs:
           PAT_TOKEN: ${{ secrets.PAT_TOKEN }}  # Reference your PAT secret
         run: |
           git push origin --delete ${{ github.event.inputs.branch_name }}  # Deletes remote branch
-          git branch -D ${{ github.event.inputs.branch_name }} # Deletes local branch (optional)
 
       - name: Confirm branch deletion
         run: echo "Branch ${{ github.event.inputs.branch_name }} deleted successfully!"
