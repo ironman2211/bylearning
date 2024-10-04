@@ -4,9 +4,9 @@ on:
   workflow_dispatch:
     inputs:
       branch_name:
-        description: 'Branch name to create'
+        description: "Enter branch name"
         required: true
-        default: 'new-branch'
+        default: "new-branch"
 
 jobs:
   create_branch:
@@ -16,20 +16,11 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Configure Git
+      - name: Create a new branch
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-
-      - name: Create new branch
-        run: |
           git checkout -b ${{ github.event.inputs.branch_name }}
-
-      - name: Push new branch
-        env:
-          PAT_TOKEN: ${{ secrets.PAT_TOKEN }}
-        run: |
-          git remote set-url origin https://x-access-token:${{ secrets.PAT_TOKEN }}@github.com/${{ github.repository }}.git
           git push origin ${{ github.event.inputs.branch_name }}
 
       - name: Confirm branch creation
