@@ -15,22 +15,21 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Repository
+      - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Config Git
-        run: /
+      - name: Configure Git
+        run: |
           git config user.name "github-actions[bot]"
-          git config user.email "gihub-actions[bot]@users.noreply.github.com"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
 
-      - name: Rename the Branch
+      - name: Delete the Branch
         env:
-          PAT_TOKEN: ${{secrets.PAT_TOKEN}}
-        run: 
-          git chechout ${{github.event.inputs.old_branch_name}}
+          PAT_TOKEN: ${{ secrets.PAT_TOKEN }}
+        run: git chechout ${{github.event.inputs.old_branch_name}}
           git branch -m ${{github.event.inputs.new_branch_name}}
           git push origin :${{github.event.inputs.old_branch_name}}
           git push origin ${{github.event.inputs.new_branch_name}}
-      
+
       - name: Rename Branch name
         run: echo "Branch ${{ github.event.inputs.branch_name }} rename successfully!"
