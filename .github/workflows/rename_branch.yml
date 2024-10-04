@@ -4,19 +4,21 @@ on:
   workflow_dispatch:
     inputs:
       old_branch_name:
-        description: "Enter the old branch name"
+        description: "Enter the current branch name to rename"
         required: true
       new_branch_name:
-        description: "Enter new branch name"
+        description: "Enter the new branch name"
         required: true
 
 jobs:
-  update_branch:
+  rename_branch:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0 
 
       - name: Configure Git
         run: |
@@ -25,12 +27,12 @@ jobs:
 
       - name: Rename the Branch
         env:
-         PAT_TOKEN: ${{ secrets.PAT_TOKEN }}
+          PAT_TOKEN: ${{ secrets.PAT_TOKEN }}
         run: |
-            git checkout ${{ github.event.inputs.old_branch_name }}
-            git branch -m ${{ github.event.inputs.new_branch_name }}
-            git push origin :${{ github.event.inputs.old_branch_name }}
-            git push origin ${{ github.event.inputs.new_branch_name }} 
-  
+          git checkout ${{ github.event.inputs.old_branch_name }} # Checkout to the old branch
+          git branch -m ${{ github.event.inputs.new_branch_name }} # Rename the branch locally
+          git push origin :${{ github.event.inputs.old_branch_name }} # Delete the old branch from the remote
+          git push origin ${{ github.event.inputs.new_branch_name }} # Push the new branch to the remote
+
       - name: Confirm branch renaming
         run: echo "Branch renamed from ${{ github.event.inputs.old_branch_name }} to ${{ github.event.inputs.new_branch_name }} successfully!"
