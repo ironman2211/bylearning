@@ -26,7 +26,7 @@ jobs:
       - name: Delete the Branch
         env:
           PAT_TOKEN: ${{ secrets.PAT_TOKEN }}
-        run: git chechout ${{github.event.inputs.old_branch_name}}
+        run: git checkout ${{github.event.inputs.old_branch_name}}
           git branch -m ${{github.event.inputs.new_branch_name}}
           git push origin :${{github.event.inputs.old_branch_name}}
           git push origin ${{github.event.inputs.new_branch_name}}
